@@ -55,6 +55,13 @@ void setup(void){
   Serial.begin(115200);
   
   boot_animation();
+  Serial.println("Wifi: ");
+  Serial.print("SSID: ");
+  Serial.print(ssid);
+  Serial.print("\n");
+  Serial.print("PWD: ");
+  Serial.print(password);
+  Serial.print("\n");
   
   WiFi.begin(ssid, password); //begin WiFi connection
   Serial.println("");
@@ -100,7 +107,7 @@ void setup(void){
   });
   server.on("/jenkins", HTTP_POST, [](){
     Serial.println("Requested URL: /jenkins");
-    StaticJsonBuffer<2048> jsonBuffer;
+    DynamicJsonBuffer jsonBuffer(4000);
     JsonObject& root = jsonBuffer.parseObject(server.arg("plain"));
     root.prettyPrintTo(Serial);
     const char* val = root["build"];
